@@ -1,0 +1,19 @@
+.App-header {
+	background-color: #581845;
+	display: flex;
+	font-size: calc(5px + 2vmin);
+	color: white;
+}
+#components-layout-demo-top .logo {
+	width: 120px;
+	height: 31px;
+	background: rgba(236, 234, 240, 0.158);
+	margin: 16px 24px 16px 0;
+	float: left;
+}
+
+/* #components-layout-demo-responsive .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+} */
