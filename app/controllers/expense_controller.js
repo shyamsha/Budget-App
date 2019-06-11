@@ -33,7 +33,7 @@ const upload = multer({
 });
 
 router.get("/", (req, res) => {
-	Expense.find()
+	Expense.find({ isDelete: false })
 
 		.populate("category")
 		.then(expense => {
@@ -52,7 +52,12 @@ router.post("/", upload.single("imageUrl"), (req, res) => {
 			const raw = Date.parse(expense.expenseDate) / 1000;
 			const date = new Date(raw * 1000).toDateString();
 			expense.expenseDate = date;
-			res.send(expense);
+			Category.findById(expense.category).then(category => {
+				res.send({
+					expense,
+					category
+				});
+			});
 		})
 		.catch(err => {
 			res.send(err);
@@ -72,13 +77,14 @@ router.put("/:id", (req, res) => {
 		});
 });
 router.delete("/:id", (req, res) => {
-	Expense.findOneAndUpdate()
-		.then(expense => {
-			res.send(expense);
-		})
-		.catch(err => {
-			res.send(err);
-		});
+	const id = req.params.id;
+	Expense.findOneAndUpdate(
+		{ _id: id },
+		{ $set: { isDelete: true } },
+		{ new: true }
+	).then(expense => {
+		res.send(expense);
+	});
 });
 module.exports = {
 	expenseController: router

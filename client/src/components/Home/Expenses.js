@@ -1,19 +1,10 @@
+/* eslint-disable no-script-url */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import axios from "../../config/config";
+import ExpenseCreateForm from "./Form";
 import "antd/dist/antd.css";
 import { Table, Input, InputNumber, Popconfirm, Button, Form } from "antd";
-
-const data = [];
-// for (let i = 0; i < 5; i++) {
-// 	data.push({
-// 		key: i.toString(),
-// 		category: "sHyaM",
-// 		name: `Edrward ${i}`,
-// 		amount: 32,
-// 		date: `${Date.now()}${i}`
-// 	});
-// }
 
 const EditableContext = React.createContext();
 
@@ -69,10 +60,11 @@ class Expenses extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			expenses: [],
-			data: data,
+			// expenses: [],
+			data: [],
 			editingKey: "",
-			count: 2
+			visible: false,
+			categories: []
 		};
 		this.columns = [
 			{
@@ -83,7 +75,7 @@ class Expenses extends Component {
 			},
 			{
 				title: "Item Name",
-				dataIndex: "name",
+				dataIndex: "itemName",
 				width: "25%",
 				editable: true
 			},
@@ -100,8 +92,8 @@ class Expenses extends Component {
 				editable: false
 			},
 			{
-				title: "Actions",
-				dataIndex: "operation",
+				title: "Action",
+				dataIndex: "edit",
 				render: (text, record) => {
 					const { editingKey } = this.state;
 					const editable = this.isEditing(record);
@@ -134,6 +126,19 @@ class Expenses extends Component {
 						</a>
 					);
 				}
+			},
+			{
+				title: "Action",
+				dataIndex: "delete",
+				render: (text, record) =>
+					this.state.data.length >= 1 ? (
+						<Popconfirm
+							title="Sure to delete?"
+							onConfirm={() => this.handleDelete(record.key)}
+						>
+							<a href="javascript:;">Delete</a>
+						</Popconfirm>
+					) : null
 			}
 		];
 	}
@@ -148,6 +153,14 @@ class Expenses extends Component {
 			if (error) {
 				return;
 			}
+			axios
+				.put(`expenses/${key}`, row)
+				.then(response => {
+					console.log(response.data);
+				})
+				.catch(err => {
+					console.log(err);
+				});
 			const newData = [...this.state.data];
 			const index = newData.findIndex(item => key === item.key);
 			if (index > -1) {
@@ -167,42 +180,87 @@ class Expenses extends Component {
 	edit(key) {
 		this.setState({ editingKey: key });
 	}
-
+	handleDelete = key => {
+		axios
+			.delete(`/expenses/${key}`)
+			.then(response => {
+				console.log(response.data);
+			})
+			.catch(err => {
+				console.log(err);
+			});
+		const data = [...this.state.data];
+		this.setState({ data: data.filter(item => item.key !== key) });
+	};
 	componentDidMount() {
 		axios
 			.get("/expenses")
 			.then(response => {
+				const data = [];
 				response.data.forEach(expense => {
+					const raw = Date.parse(expense.expenseDate) / 1000;
+					const date = new Date(raw * 1000).toDateString();
 					data.push({
 						key: expense._id,
-						name: expense.itemName,
+						itemName: expense.itemName,
 						amount: expense.amount,
 						category: expense.category.category,
-						date: expense.expenseDate
+						date: date
 					});
 				});
-
-				// console.log(response.data);
-				this.setState(() => ({ expenses: response.data }));
+				this.setState(() => ({
+					data: data
+				}));
 			})
 			.catch(err => {
 				console.log(err);
 			});
 	}
-	handleAdd = () => {
-		const { count, data } = this.state;
-		const newData = {
-			key: count,
-			category: "sHyaM",
-			name: `Edward King ${count}`,
-			amount: 32,
-			date: `${Date.now()}${count}`
-		};
-		this.setState({
-			data: [...data, newData],
-			count: count + 1
+	showModal = () => {
+		this.setState({ visible: true });
+	};
+	handleCancel = () => {
+		this.setState({ visible: false });
+	};
+
+	handleCreate = () => {
+		const form = this.formRef.props.form;
+		form.validateFields((err, values) => {
+			if (err) {
+				return;
+			}
+			axios
+				.post("/expenses", values)
+				.then(response => {
+					const raw = Date.parse(response.data.expense.expenseDate) / 1000;
+					const date = new Date(raw * 1000).toDateString();
+					this.setState(prevState => {
+						return {
+							data: [
+								...prevState.data,
+								{
+									key: response.data.expense._id,
+									itemName: response.data.expense.itemName,
+									amount: response.data.expense.amount,
+									category: response.data.category.category,
+									date: date
+								}
+							]
+						};
+					});
+				})
+				.catch(err => {
+					console.log(err);
+				});
+			form.resetFields();
+			this.setState({ visible: false });
 		});
 	};
+
+	saveFormRef = formRef => {
+		this.formRef = formRef;
+	};
+
 	render() {
 		const components = {
 			body: {
@@ -226,25 +284,35 @@ class Expenses extends Component {
 		});
 		return (
 			<div>
-				<EditableContext.Provider value={this.props.form}>
-					<Button
-						onClick={this.handleAdd}
-						type="primary"
-						style={{ marginBottom: 16 }}
-					>
+				<div>
+					<Button type="primary" onClick={this.showModal}>
 						Add Expense
 					</Button>
-					<Table
-						components={components}
-						bordered
-						dataSource={this.state.data}
-						columns={columns}
-						rowClassName="editable-row"
-						pagination={{
-							onChange: this.cancel
-						}}
+					<Button type="primary" style={{ float: "right" }}>
+						Restore Deleted Items
+					</Button>
+					<ExpenseCreateForm
+						wrappedComponentRef={this.saveFormRef}
+						visible={this.state.visible}
+						onCancel={this.handleCancel}
+						onCreate={this.handleCreate}
 					/>
-				</EditableContext.Provider>
+				</div>
+				<br />
+				<div>
+					<EditableContext.Provider value={this.props.form}>
+						<Table
+							components={components}
+							bordered
+							dataSource={this.state.data}
+							columns={columns}
+							rowClassName="editable-row"
+							pagination={{
+								onChange: this.cancel
+							}}
+						/>
+					</EditableContext.Provider>
+				</div>
 			</div>
 		);
 	}

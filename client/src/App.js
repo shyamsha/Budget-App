@@ -4,6 +4,7 @@ import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 // import Login from "./components/users/Login";
 // import Logout from "./components/users/Logout";
 import EditableFormTable from "./components/Home/Expenses";
+import Categories from "./components/Settings/Categories";
 import "./App.css";
 import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
@@ -159,8 +160,8 @@ class App extends Component {
 											exact
 										/>
 										{/* <Route path="/" component={Login} exact /> */}
-										{/* <Route path="/user/settings" component={Threads} exact />
-						<Route path="/user/profile" component={ThreadAdd} exact /> */}
+										<Route path="/user/settings" component={Categories} exact />
+										{/*<Route path="/user/profile" component={ThreadAdd} exact /> */}
 									</Switch>
 								</div>
 							</Content>
