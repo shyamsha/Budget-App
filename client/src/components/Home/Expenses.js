@@ -60,7 +60,6 @@ class Expenses extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			// expenses: [],
 			data: [],
 			editingKey: "",
 			visible: false,
@@ -234,6 +233,7 @@ class Expenses extends Component {
 				.then(response => {
 					const raw = Date.parse(response.data.expense.expenseDate) / 1000;
 					const date = new Date(raw * 1000).toDateString();
+
 					this.setState(prevState => {
 						return {
 							data: [
