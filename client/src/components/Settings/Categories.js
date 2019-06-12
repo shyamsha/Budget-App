@@ -1,3 +1,4 @@
+/* eslint-disable no-script-url */
 import React, { Component } from "react";
 import Budget from "./Budget";
 import axios from "../../config/config";
