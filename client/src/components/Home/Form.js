@@ -1,14 +1,26 @@
 import React, { Component } from "react";
 import axios from "../../config/config";
-import { Modal, Form, Input, InputNumber, Select } from "antd";
+import {
+	Modal,
+	Form,
+	Input,
+	InputNumber,
+	Select,
+	Upload,
+	message,
+	Icon,
+	Button
+} from "antd";
 const { Option } = Select;
 const ExpenseCreateForm = Form.create({ name: "form_in_modal" })(
 	// eslint-disable-next-line
+
 	class extends Component {
 		constructor() {
 			super();
 			this.state = {
-				categories: []
+				categories: [],
+				file: null
 			};
 		}
 		componentDidMount() {
@@ -21,9 +33,29 @@ const ExpenseCreateForm = Form.create({ name: "form_in_modal" })(
 					console.log(err);
 				});
 		}
+		fileHandle = e => {
+			console.log(e.target.file);
+		};
 		render() {
 			const { visible, onCancel, onCreate, form } = this.props;
 			const { getFieldDecorator } = form;
+			const props = {
+				name: "file",
+				action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+				headers: {
+					authorization: "authorization-text"
+				},
+				onChange(info) {
+					if (info.file.status !== "uploading") {
+						console.log(info.file, info.fileList);
+					}
+					if (info.file.status === "done") {
+						message.success(`${info.file.name} file uploaded successfully`);
+					} else if (info.file.status === "error") {
+						message.error(`${info.file.name} file upload failed.`);
+					}
+				}
+			};
 			return (
 				<Modal
 					visible={visible}
@@ -71,6 +103,19 @@ const ExpenseCreateForm = Form.create({ name: "form_in_modal" })(
 										);
 									})}
 								</Select>
+							)}
+						</Form.Item>
+						<Form.Item label="Invoice">
+							{getFieldDecorator("imageUrl", {
+								valuePropName: "file",
+								getValueFromEvent: this.file
+							})(
+								<Input type="file" onChange={this.fileHandle} />
+								// <Upload {...props}>
+								// 	<Button>
+								// 		<Icon type="upload" /> Upload Invoice
+								// 	</Button>
+								// </Upload>
 							)}
 						</Form.Item>
 					</Form>

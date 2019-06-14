@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express();
 const path = require("path");
 const port = 3001;
+require("dotenv").config();
 app.use(express.json());
 app.use(cors());
 //db config

@@ -45,7 +45,13 @@ router.get("/", (req, res) => {
 });
 router.post("/", upload.single("imageUrl"), (req, res) => {
 	// imageUrl: req.file.location;
-	const expense = new Expense(req.body);
+	// console.log(req.file);
+	const expense = new Expense({
+		itemName: req.body.itemName,
+		amount: req.body.amount,
+		category: req.body.category,
+		imageUrl: req.body.imageUrl
+	});
 	expense
 		.save()
 		.then(expense => {

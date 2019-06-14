@@ -105,10 +105,9 @@ class Categories extends Component {
 	saveFormRef = formRef => {
 		this.formRef = formRef;
 	};
-
 	render() {
 		const { categories } = this.state;
-
+		console.log(categories);
 		return (
 			<div>
 				<center style={{ marginTop: "1rem" }}>

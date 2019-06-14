@@ -1,0 +1,32 @@
+.donutchart-track {
+	fill: aqua;
+	stroke: black;
+	stroke-width: 26;
+}
+.donutchart-indicator {
+	fill: red;
+	stroke: green;
+	stroke-width: 26;
+	stroke-dasharray: 0 10000;
+	transition: stroke-dasharray 0.3s ease;
+}
+
+.donutchart {
+	margin: 0 auto;
+	border-radius: 50%;
+	display: block;
+}
+
+.donutchart-text {
+	font-family: "Roboto";
+	fill: red;
+}
+.donutchart-text-val {
+	font-size: 22px;
+}
+.donutchart-text-percent {
+	font-size: 14px;
+}
+.donutchart-text-label {
+	font-size: 9px;
+}

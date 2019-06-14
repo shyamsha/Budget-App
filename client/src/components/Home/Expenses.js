@@ -3,6 +3,8 @@
 import React, { Component } from "react";
 import axios from "../../config/config";
 import ExpenseCreateForm from "./Form";
+import BudgetChart from "./BudgetChart";
+import CategoryChart from "./CategoryChart";
 import "antd/dist/antd.css";
 import { Table, Input, InputNumber, Popconfirm, Button, Form } from "antd";
 
@@ -228,6 +230,7 @@ class Expenses extends Component {
 			if (err) {
 				return;
 			}
+			console.log(values);
 			axios
 				.post("/expenses", values)
 				.then(response => {
@@ -262,6 +265,7 @@ class Expenses extends Component {
 	};
 
 	render() {
+		// console.log(this.state.categories);
 		const components = {
 			body: {
 				cell: EditableCell
@@ -284,6 +288,11 @@ class Expenses extends Component {
 		});
 		return (
 			<div>
+				<div>
+					<CategoryChart expenses={this.state.data} />
+					<BudgetChart data={this.state.data} />
+				</div>
+
 				<div>
 					<Button type="primary" onClick={this.showModal}>
 						Add Expense
