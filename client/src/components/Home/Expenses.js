@@ -184,9 +184,7 @@ class Expenses extends Component {
 	handleDelete = key => {
 		axios
 			.delete(`/expenses/${key}`)
-			.then(response => {
-				console.log(response.data);
-			})
+			.then(response => {})
 			.catch(err => {
 				console.log(err);
 			});
@@ -209,6 +207,7 @@ class Expenses extends Component {
 						date: date
 					});
 				});
+				console.log(data);
 				this.setState(() => ({
 					data: data
 				}));
@@ -263,6 +262,33 @@ class Expenses extends Component {
 	saveFormRef = formRef => {
 		this.formRef = formRef;
 	};
+	restore = () => {
+		axios
+			.get("/expenses/undo")
+			.then(response => {
+				const data = [];
+				response.data.forEach(expense => {
+					const raw = Date.parse(expense.expenseDate) / 1000;
+					const date = new Date(raw * 1000).toDateString();
+					data.push({
+						key: expense._id,
+						itemName: expense.itemName,
+						amount: expense.amount,
+						category: expense.category.category,
+						date: date
+					});
+				});
+				console.log(data);
+				this.setState(prevState => {
+					return {
+						data: [...prevState.data, ...data]
+					};
+				});
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	};
 
 	render() {
 		// console.log(this.state.categories);
@@ -289,7 +315,7 @@ class Expenses extends Component {
 		return (
 			<div>
 				<div>
-					<CategoryChart expenses={this.state.data} />
+					<CategoryChart />
 					<BudgetChart data={this.state.data} />
 				</div>
 
@@ -297,7 +323,11 @@ class Expenses extends Component {
 					<Button type="primary" onClick={this.showModal}>
 						Add Expense
 					</Button>
-					<Button type="primary" style={{ float: "right" }}>
+					<Button
+						type="primary"
+						style={{ float: "right" }}
+						onClick={this.restore}
+					>
 						Restore Deleted Items
 					</Button>
 					<ExpenseCreateForm

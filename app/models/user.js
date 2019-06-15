@@ -46,7 +46,11 @@ const userSchema = new Schema({
 				type: String
 			}
 		}
-	]
+	],
+	imageUrl: {
+		type: String
+		// required: true
+	}
 });
 //hash password
 userSchema.pre("save", function(next) {

@@ -92,7 +92,7 @@ class BudgetChart extends Component {
 		return (
 			<div>
 				Budget Wise Split
-				<div style={{ marginLeft: "15rem", marginTop: "2rem" }}>
+				<div style={{ marginLeft: "15rem", marginTop: "1rem" }}>
 					<span style={{ color: "red" }}>
 						Total Amount:{this.state.budgetAmount} <br />
 					</span>

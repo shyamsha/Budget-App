@@ -34,7 +34,16 @@ const upload = multer({
 
 router.get("/", (req, res) => {
 	Expense.find({ isDelete: false })
-
+		.populate("category")
+		.then(expense => {
+			res.send(expense);
+		})
+		.catch(err => {
+			res.send(err);
+		});
+});
+router.get("/undo", (req, res) => {
+	Expense.find({ isDelete: true })
 		.populate("category")
 		.then(expense => {
 			res.send(expense);

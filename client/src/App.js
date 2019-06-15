@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
-// import Register from "./components/users/Register";
-// import Login from "./components/users/Login";
-// import Logout from "./components/users/Logout";
+import Register from "./components/users/Register";
+import Login from "./components/users/Login";
+import Logout from "./components/users/Logout";
 import EditableFormTable from "./components/Home/Expenses";
 import Categories from "./components/Settings/Categories";
+import Profile from "./components/Profile/Profile";
 import "./App.css";
 import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
@@ -20,28 +21,28 @@ class App extends Component {
 			//logout: false
 		};
 	}
-	// handleLogin = () => {
-	// 	this.setState(() => ({
-	// 		// login: true,
-	// 		// logout: false
-	// 	}));
-	// };
-	// handleLogout = () => {
-	// 	this.setState(() => ({
-	// 		// logout: true,
-	// 		// login: false
-	// 	}));
-	// };
+	handleLogin = () => {
+		this.setState(() => ({
+			// login: true,
+			// logout: false
+		}));
+	};
+	handleLogout = () => {
+		this.setState(() => ({
+			// logout: true,
+			// login: false
+		}));
+	};
 
 	render() {
-		// let login = false;
-		// let logout = false;
+		let login = false;
+		let logout = false;
 
-		// if (localStorage.getItem("token")) {
-		// 	login = true;
-		// } else {
-		// 	logout = true;
-		// }
+		if (localStorage.getItem("token")) {
+			login = true;
+		} else {
+			logout = true;
+		}
 
 		return (
 			<BrowserRouter>
@@ -60,7 +61,7 @@ class App extends Component {
 					>
 						Onet
 					</Link>
-					{/* {logout && (
+					{logout && (
 						<div>
 							<Link
 								to="/user/register"
@@ -97,9 +98,9 @@ class App extends Component {
 								}}
 							>
 								Logout
-							</Link> 
+							</Link>
 						</div>
-					)}*/}
+					)}
 				</div>
 				<div>
 					<Layout>
@@ -135,33 +136,41 @@ class App extends Component {
 							<Content style={{ margin: "24px 16px 0" }}>
 								<div style={{ padding: 0, minHeight: 525 }}>
 									<Switch>
-										{/* <Route
-							path="/user/login"
-							render={props => {
-								return (
-									<Login {...props} handleLogin={this.handleLogin} exact />
-								);
-							}}
-							exact
-						/>
-						<Route path="/user/register" component={Register} exact />
-						<Route
-							path="/user/logout"
-							render={props => {
-								return (
-									<Logout {...props} handleLogout={this.handleLogout} exact />
-								);
-							}}
-							exact
-						/> */}
+										<Route
+											path="/user/login"
+											render={props => {
+												return (
+													<Login
+														{...props}
+														handleLogin={this.handleLogin}
+														exact
+													/>
+												);
+											}}
+											exact
+										/>
+										<Route path="/user/register" component={Register} exact />
+										<Route
+											path="/user/logout"
+											render={props => {
+												return (
+													<Logout
+														{...props}
+														handleLogout={this.handleLogout}
+														exact
+													/>
+												);
+											}}
+											exact
+										/>
 										<Route
 											path="/user/home"
 											component={EditableFormTable}
 											exact
 										/>
-										{/* <Route path="/" component={Login} exact /> */}
+										<Route path="/" component={Login} exact />
 										<Route path="/user/settings" component={Categories} exact />
-										{/*<Route path="/user/profile" component={ThreadAdd} exact /> */}
+										<Route path="/user/profile" component={Profile} exact />
 									</Switch>
 								</div>
 							</Content>
