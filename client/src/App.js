@@ -163,14 +163,30 @@ class App extends Component {
 											}}
 											exact
 										/>
-										<Route
-											path="/user/home"
-											component={EditableFormTable}
-											exact
-										/>
+										{login ? (
+											<Route
+												path="/user/home"
+												component={EditableFormTable}
+												exact
+											/>
+										) : (
+											<Login />
+										)}
 										<Route path="/" component={Login} exact />
-										<Route path="/user/settings" component={Categories} exact />
-										<Route path="/user/profile" component={Profile} exact />
+										{login ? (
+											<Route
+												path="/user/settings"
+												component={Categories}
+												exact
+											/>
+										) : (
+											<Login />
+										)}
+										{login ? (
+											<Route path="/user/profile" component={Profile} exact />
+										) : (
+											<Login />
+										)}
 									</Switch>
 								</div>
 							</Content>

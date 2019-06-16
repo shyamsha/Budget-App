@@ -16,6 +16,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import axios from "../../config/config";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 const styles = theme => ({
 	main: {
 		width: "auto",
@@ -59,7 +60,9 @@ class Login extends Component {
 			emailError: "",
 			passwordError: "",
 			error: false,
-			perror: false
+			perror: false,
+			load: false,
+			redirect: false
 		};
 	}
 	emailHandle = e => {
@@ -117,9 +120,14 @@ class Login extends Component {
 
 					this.setState(() => ({ loginError: token }));
 					if (token !== "invalid email or password") {
-						this.setState(() => ({ loginError: "" }));
+						this.setState(() => ({
+							loginError: "",
+							load: true,
+							redirect: true
+						}));
+
 						localStorage.setItem("token", token);
-						this.props.history.push("/user/home/");
+						//this.props.history.push("/user/home/");
 						this.props.handleLogin();
 					}
 				})
@@ -130,6 +138,10 @@ class Login extends Component {
 	};
 
 	render() {
+		if (this.state.redirect) {
+			return <Redirect to="/user/home" />;
+		}
+		console.log(this.props);
 		const { classes } = this.props;
 		return (
 			<div>

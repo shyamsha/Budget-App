@@ -6,6 +6,10 @@ const budgetSchema = new Schema({
 		type: Number,
 		requrired: true,
 		default: 0
+	},
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: "User"
 	}
 });
 const Budget = mongoose.model("Budget", budgetSchema);

@@ -25,7 +25,6 @@ class BudgetForm extends Component {
 
 	handleNumberChange = e => {
 		const budgetAmount = parseInt(e.target.value || 0, 10);
-		console.log(e.target.value);
 		if (Number.isNaN(budgetAmount)) {
 			return;
 		}

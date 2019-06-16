@@ -31,6 +31,12 @@ class Profile extends Component {
 				console.log(err);
 			});
 	}
+	handleBack = () => {
+		this.props.history.push("/user/settings");
+	};
+	handleBackward = () => {
+		this.props.history.push("/user/home");
+	};
 	render() {
 		return (
 			<div>
@@ -38,7 +44,10 @@ class Profile extends Component {
 				<Card
 					style={{ width: 300 }}
 					cover={<img alt="userphoto" src={this.state.user.imageUrl} />}
-					actions={[<Icon type="setting" />, <Icon type="home" />]}
+					actions={[
+						<Icon type="setting" onClick={this.handleBack} />,
+						<Icon type="home" onClick={this.handleBackward} />
+					]}
 				>
 					<Meta
 						title={this.state.user.username}

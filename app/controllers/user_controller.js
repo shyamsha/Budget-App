@@ -32,7 +32,6 @@ const upload = multer({
 });
 
 router.post("/register", upload.single("imageUrl"), (req, res) => {
-	console.log(req.file);
 	const user = new User({
 		username: req.body.username,
 		email: req.body.email,
@@ -81,11 +80,8 @@ router.delete("/logout", authenticationByUser, (req, res) => {
 		});
 });
 router.get("/:id", authenticationByUser, (req, res) => {
-	console.log(req.user._id);
-
 	User.findOne({ _id: req.params.id })
 		.then(user => {
-			console.log(user);
 			res.send(user);
 		})
 		.catch(err => {

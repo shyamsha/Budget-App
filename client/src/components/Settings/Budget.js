@@ -13,7 +13,9 @@ class Budget extends Component {
 	}
 	componentDidMount() {
 		axios
-			.get("/budget")
+			.get("/budget", {
+				headers: { "x-auth": localStorage.getItem("token") }
+			})
 			.then(response => {
 				let budget = 0;
 				let key = "";
@@ -33,7 +35,9 @@ class Budget extends Component {
 			if (!err) {
 				const formData = values.budgetAmount;
 				axios
-					.put(`/budget/${this.state.key}`, formData)
+					.put(`/budget/${this.state.key}`, formData, {
+						headers: { "x-auth": localStorage.getItem("token") }
+					})
 					.then(response => {
 						// console.log(response.data);
 					})

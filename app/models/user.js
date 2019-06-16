@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Budget = require("./budget.js");
 const { Schema } = mongoose;
 const userSchema = new Schema({
 	username: {
@@ -60,7 +61,9 @@ userSchema.pre("save", function(next) {
 				.hash(this.password, salt)
 				.then(hashpassword => {
 					this.password = hashpassword;
-					next();
+					Budget.save({ budgetAmount: 0, user: this._id }).then(user => {
+						next();
+					});
 				})
 				.catch(err => {
 					console.log(err);

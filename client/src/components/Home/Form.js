@@ -1,16 +1,6 @@
 import React, { Component } from "react";
 import axios from "../../config/config";
-import {
-	Modal,
-	Form,
-	Input,
-	InputNumber,
-	Select,
-	Upload,
-	message,
-	Icon,
-	Button
-} from "antd";
+import { Modal, Form, Input, InputNumber, Select, message } from "antd";
 const { Option } = Select;
 const ExpenseCreateForm = Form.create({ name: "form_in_modal" })(
 	// eslint-disable-next-line
@@ -25,7 +15,9 @@ const ExpenseCreateForm = Form.create({ name: "form_in_modal" })(
 		}
 		componentDidMount() {
 			axios
-				.get("/categories")
+				.get("/categories", {
+					headers: { "x-auth": localStorage.getItem("token") }
+				})
 				.then(response => {
 					this.setState(() => ({ categories: response.data }));
 				})

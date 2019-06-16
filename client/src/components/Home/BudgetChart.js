@@ -68,7 +68,9 @@ class BudgetChart extends Component {
 
 	componentDidMount() {
 		axios
-			.get("./budget")
+			.get("/budget", {
+				headers: { "x-auth": localStorage.getItem("token") }
+			})
 			.then(response => {
 				let amount = 0;
 				response.data.forEach(budget => {
@@ -92,7 +94,7 @@ class BudgetChart extends Component {
 		return (
 			<div>
 				Budget Wise Split
-				<div style={{ marginLeft: "15rem", marginTop: "1rem" }}>
+				<div style={{ marginLeft: "15rem", marginTop: "0.5rem" }}>
 					<span style={{ color: "red" }}>
 						Total Amount:{this.state.budgetAmount} <br />
 					</span>

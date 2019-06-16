@@ -155,7 +155,9 @@ class Expenses extends Component {
 				return;
 			}
 			axios
-				.put(`expenses/${key}`, row)
+				.put(`expenses/${key}`, row, {
+					headers: { "x-auth": localStorage.getItem("token") }
+				})
 				.then(response => {
 					console.log(response.data);
 				})
@@ -183,7 +185,9 @@ class Expenses extends Component {
 	}
 	handleDelete = key => {
 		axios
-			.delete(`/expenses/${key}`)
+			.delete(`/expenses/${key}`, {
+				headers: { "x-auth": localStorage.getItem("token") }
+			})
 			.then(response => {})
 			.catch(err => {
 				console.log(err);
@@ -193,7 +197,9 @@ class Expenses extends Component {
 	};
 	componentDidMount() {
 		axios
-			.get("/expenses")
+			.get("/expenses", {
+				headers: { "x-auth": localStorage.getItem("token") }
+			})
 			.then(response => {
 				const data = [];
 				response.data.forEach(expense => {
@@ -207,7 +213,7 @@ class Expenses extends Component {
 						date: date
 					});
 				});
-				console.log(data);
+
 				this.setState(() => ({
 					data: data
 				}));
@@ -231,7 +237,9 @@ class Expenses extends Component {
 			}
 			console.log(values);
 			axios
-				.post("/expenses", values)
+				.post("/expenses", values, {
+					headers: { "x-auth": localStorage.getItem("token") }
+				})
 				.then(response => {
 					const raw = Date.parse(response.data.expense.expenseDate) / 1000;
 					const date = new Date(raw * 1000).toDateString();
@@ -264,7 +272,13 @@ class Expenses extends Component {
 	};
 	restore = () => {
 		axios
-			.get("/expenses/undo")
+			.put(
+				"/expenses/undo",
+				{},
+				{
+					headers: { "x-auth": localStorage.getItem("token") }
+				}
+			)
 			.then(response => {
 				const data = [];
 				response.data.forEach(expense => {
@@ -278,10 +292,10 @@ class Expenses extends Component {
 						date: date
 					});
 				});
-				console.log(data);
+				console.log(response.data);
 				this.setState(prevState => {
 					return {
-						data: [...prevState.data, ...data]
+						data: [prevState.data, ...data]
 					};
 				});
 			})
@@ -315,7 +329,7 @@ class Expenses extends Component {
 		return (
 			<div>
 				<div>
-					<CategoryChart />
+					<CategoryChart expenses={this.state.data} />
 					<BudgetChart data={this.state.data} />
 				</div>
 

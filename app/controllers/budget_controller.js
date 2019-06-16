@@ -4,8 +4,8 @@ const { authenticationByUser } = require("../middlewares/authenticate");
 const { autherizationByUser } = require("../middlewares/autherization");
 const { Budget } = require("../models/budget");
 
-router.get("/", (req, res) => {
-	Budget.find()
+router.get("/", authenticationByUser, (req, res) => {
+	Budget.find({ user: req.user._id })
 		.then(budget => {
 			res.send(budget);
 		})
@@ -13,8 +13,9 @@ router.get("/", (req, res) => {
 			res.send(err);
 		});
 });
-router.post("/", (req, res) => {
+router.post("/", authenticationByUser, (req, res) => {
 	const budget = new Budget(req.body);
+	budget.user = req.user._id;
 	budget
 		.save()
 		.then(budget => {
@@ -24,9 +25,9 @@ router.post("/", (req, res) => {
 			res.send(err);
 		});
 });
-router.put("/:id", (req, res) => {
+router.put("/:id", authenticationByUser, (req, res) => {
 	Budget.findOneAndUpdate(
-		{ _id: req.params.id },
+		{ _id: req.params.id, user: req.user._id },
 		{ $set: req.body },
 		{ new: true }
 	)

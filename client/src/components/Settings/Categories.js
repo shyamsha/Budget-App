@@ -38,7 +38,9 @@ class Categories extends Component {
 	}
 	componentDidMount() {
 		axios
-			.get("categories")
+			.get("/categories", {
+				headers: { "x-auth": localStorage.getItem("token") }
+			})
 			.then(response => {
 				const data = [];
 				response.data.forEach(category => {
@@ -55,7 +57,9 @@ class Categories extends Component {
 	}
 	handleDelete = key => {
 		axios
-			.delete(`categories/${key}`)
+			.delete(`/categories/${key}`, {
+				headers: { "x-auth": localStorage.getItem("token") }
+			})
 			.then(response => {
 				// console.log(response.data);
 			})
@@ -81,7 +85,9 @@ class Categories extends Component {
 			}
 
 			axios
-				.post("/categories", values)
+				.post("/categories", values, {
+					headers: { "x-auth": localStorage.getItem("token") }
+				})
 				.then(response => {
 					this.setState(prevState => {
 						return {
@@ -107,7 +113,7 @@ class Categories extends Component {
 	};
 	render() {
 		const { categories } = this.state;
-		console.log(categories);
+
 		return (
 			<div>
 				<center style={{ marginTop: "1rem" }}>
