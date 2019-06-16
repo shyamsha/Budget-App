@@ -61,9 +61,9 @@ userSchema.pre("save", function(next) {
 				.hash(this.password, salt)
 				.then(hashpassword => {
 					this.password = hashpassword;
-					Budget.save({ budgetAmount: 0, user: this._id }).then(user => {
-						next();
-					});
+					// Budget.save({ budgetAmount: 0, user: this._id }).then(user => {
+					next();
+					// });
 				})
 				.catch(err => {
 					console.log(err);
