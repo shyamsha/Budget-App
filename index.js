@@ -17,7 +17,7 @@ const { userController } = require("./app/controllers/user_controller");
 const { budgetController } = require("./app/controllers/budget_controller");
 const { categoryController } = require("./app/controllers/category_controller");
 const { expenseController } = require("./app/controllers/expense_controller");
-
+app.use(express.static(path.join(__dirname, "client/build")));
 //route urls
 app.use("/users", userController);
 app.use("/budget", budgetController);
@@ -35,7 +35,7 @@ app.use(function(req, res) {
 			"The resource you are looking for doesn’t exist." + "\n 404 Not Found "
 		);
 });
-app.use(express.static(path.join(__dirname, "client/build")));
+
 app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
