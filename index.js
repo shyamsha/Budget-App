@@ -1,9 +1,13 @@
 ﻿const express = require("express");
 const cors = require("cors");
 const app = express();
-const path = require("path");
-const port = 3001;
+// const path = require("path");
+// const port = 3001;
+
 require("dotenv").config();
+const path = require("path");
+const port = process.env.PORT || 3001;
+
 app.use(express.json());
 app.use(cors());
 //db config
@@ -31,7 +35,10 @@ app.use(function(req, res) {
 			"The resource you are looking for doesn’t exist." + "\n 404 Not Found "
 		);
 });
-
+app.use(express.static(path.join(__dirname, "client/build")));
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
 //listening server
 app.listen(port, () => {
 	console.log("listining from", port);
