@@ -3,9 +3,6 @@ import axios from "../../config/config";
 import { Doughnut } from "react-chartjs-2";
 import { Chart } from "react-chartjs-2";
 
-function getRandomInt(min, max) {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 Chart.pluginService.register({
 	beforeDraw: function(chart) {
 		if (chart.config.options.elements.center) {
@@ -53,16 +50,7 @@ class BudgetChart extends Component {
 		this.state = {
 			budgetAmount: 0,
 			spentamount: 0,
-			data: props.data ? props.data : [],
-			labels: ["Budget", "Spent"],
-			datasets: [
-				{
-					data: [getRandomInt(50, 0), getRandomInt(5, 0)],
-					backgroundColor: ["#FF6384", "#36A2EB"],
-					hoverBackgroundColor: ["#FF6384", "#36A2EB"]
-				}
-			],
-			text: "23%"
+			data: props.data ? props.data : []
 		};
 	}
 
@@ -90,21 +78,27 @@ class BudgetChart extends Component {
 			spentamount += Number(expense.amount);
 		});
 		let percent = (spentamount * 100) / this.state.budgetAmount;
-
 		return (
 			<div>
 				Budget Wise Split
 				<div style={{ marginLeft: "15rem", marginTop: "0.5rem" }}>
-					<span style={{ color: "red" }}>
+					<span style={{ color: "blue" }}>
 						Total Amount:{this.state.budgetAmount} <br />
 					</span>
-					<span style={{ color: "blue" }}>Total Expenses: {spentamount}</span>
+					<span style={{ color: "red" }}>Total Expenses: {spentamount}</span>
 				</div>
 				<div style={{ marginRight: "40rem" }}>
 					<Doughnut
-						data={this.state}
-						//height={40}
-						// borderAlign="inner"
+						data={{
+							labels: ["Budget", "Spent"],
+							datasets: [
+								{
+									data: [percent, 100 - percent],
+									backgroundColor: ["#FF6384", "#36A2EB"],
+									hoverBackgroundColor: ["#FF6384", "#36A2EB"]
+								}
+							]
+						}}
 						options={{
 							maintainAspectRatio: false,
 							responsive: true,

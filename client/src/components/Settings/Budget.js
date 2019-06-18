@@ -39,7 +39,7 @@ class Budget extends Component {
 						headers: { "x-auth": localStorage.getItem("token") }
 					})
 					.then(response => {
-						// console.log(response.data);
+						console.log(response.data);
 					})
 					.catch(err => {
 						console.log(err);

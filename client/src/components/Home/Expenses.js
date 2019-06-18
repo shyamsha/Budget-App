@@ -158,9 +158,7 @@ class Expenses extends Component {
 				.put(`expenses/${key}`, row, {
 					headers: { "x-auth": localStorage.getItem("token") }
 				})
-				.then(response => {
-					console.log(response.data);
-				})
+				.then(response => {})
 				.catch(err => {
 					console.log(err);
 				});
@@ -235,7 +233,6 @@ class Expenses extends Component {
 			if (err) {
 				return;
 			}
-			console.log(values);
 			axios
 				.post("/expenses", values, {
 					headers: { "x-auth": localStorage.getItem("token") }
@@ -292,7 +289,6 @@ class Expenses extends Component {
 						date: date
 					});
 				});
-				console.log(response.data);
 				this.setState(prevState => {
 					return {
 						data: [prevState.data, ...data]
@@ -305,7 +301,6 @@ class Expenses extends Component {
 	};
 
 	render() {
-		// console.log(this.state.categories);
 		const components = {
 			body: {
 				cell: EditableCell

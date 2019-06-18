@@ -141,7 +141,7 @@ class Login extends Component {
 		if (this.state.redirect) {
 			return <Redirect to="/user/home" />;
 		}
-		console.log(this.props);
+
 		const { classes } = this.props;
 		return (
 			<div>

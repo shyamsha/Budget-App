@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Budget = require("./budget.js");
+const { Budget } = require("./budget.js");
 const { Schema } = mongoose;
 const userSchema = new Schema({
 	username: {
@@ -61,9 +61,12 @@ userSchema.pre("save", function(next) {
 				.hash(this.password, salt)
 				.then(hashpassword => {
 					this.password = hashpassword;
-					// Budget.save({ budgetAmount: 0, user: this._id }).then(user => {
+					Budget.collection.insertOne(
+						{ budgetAmount: 0, user: this._id },
+						{ w: 1 },
+						function(err, records) {}
+					);
 					next();
-					// });
 				})
 				.catch(err => {
 					console.log(err);
@@ -73,6 +76,7 @@ userSchema.pre("save", function(next) {
 		next();
 	}
 });
+
 //checking email and password correct or not written by user
 userSchema.statics.findByCredentials = function(email, password) {
 	return User.findOne({ email })
