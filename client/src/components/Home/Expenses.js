@@ -230,6 +230,7 @@ class Expenses extends Component {
 	handleCreate = () => {
 		const form = this.formRef.props.form;
 		form.validateFields((err, values) => {
+			console.log(values);
 			if (err) {
 				return;
 			}

@@ -26,7 +26,7 @@ const ExpenseCreateForm = Form.create({ name: "form_in_modal" })(
 				});
 		}
 		fileHandle = e => {
-			console.log(e.target.file);
+			console.log(e.target.files[0]);
 		};
 		render() {
 			const { visible, onCancel, onCreate, form } = this.props;

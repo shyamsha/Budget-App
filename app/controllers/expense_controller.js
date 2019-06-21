@@ -60,7 +60,7 @@ router.post(
 	upload.single("imageUrl"),
 	(req, res) => {
 		// imageUrl: req.file.location;
-		// console.log(req.file);
+		console.log(req.file);
 		const expense = new Expense({
 			itemName: req.body.itemName,
 			amount: req.body.amount,

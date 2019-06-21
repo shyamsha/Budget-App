@@ -110,7 +110,7 @@ class Register extends React.Component {
 		data.append("occupation", this.state.occupation);
 		data.append("imageUrl", this.state.imageUrl);
 		data.append("password", this.state.password);
-		const budgetdata = { budgetAmount: 0 };
+	
 
 		const emailReg = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b/.test(
 			this.state.email

@@ -11,6 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import IconButton from "@material-ui/core/IconButton";
 import "antd/dist/antd.css";
 import { Layout, Menu, Icon } from "antd";
+import { HashRouter } from "react-router-dom";
 const { Content, Sider, Footer } = Layout;
 
 class App extends Component {
