@@ -292,7 +292,7 @@ class Expenses extends Component {
 				});
 				this.setState(prevState => {
 					return {
-						data: [prevState.data, ...data]
+						data: data
 					};
 				});
 			})

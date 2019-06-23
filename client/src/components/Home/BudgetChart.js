@@ -90,7 +90,7 @@ class BudgetChart extends Component {
 				<div style={{ marginRight: "40rem" }}>
 					<Doughnut
 						data={{
-							labels: ["Budget", "Spent"],
+							labels: ["Spent", "Budget"],
 							datasets: [
 								{
 									data: [percent, 100 - percent],

@@ -10,7 +10,7 @@ const ExpenseCreateForm = Form.create({ name: "form_in_modal" })(
 			super();
 			this.state = {
 				categories: [],
-				file: null
+				imageUrl: null
 			};
 		}
 		componentDidMount() {
@@ -26,7 +26,9 @@ const ExpenseCreateForm = Form.create({ name: "form_in_modal" })(
 				});
 		}
 		fileHandle = e => {
-			console.log(e.target.files[0]);
+			e.persist();
+			const img = e.target.files[0];
+			this.setState(() => ({ imageUrl: img }));
 		};
 		render() {
 			const { visible, onCancel, onCreate, form } = this.props;
@@ -100,9 +102,13 @@ const ExpenseCreateForm = Form.create({ name: "form_in_modal" })(
 						<Form.Item label="Invoice">
 							{getFieldDecorator("imageUrl", {
 								valuePropName: "file",
-								getValueFromEvent: this.file
+								getValueFromEvent: this.state.imageUrl
 							})(
-								<Input type="file" onChange={this.fileHandle} />
+								<Input
+									type="file"
+									value={this.state.file}
+									onChange={this.fileHandle}
+								/>
 								// <Upload {...props}>
 								// 	<Button>
 								// 		<Icon type="upload" /> Upload Invoice
